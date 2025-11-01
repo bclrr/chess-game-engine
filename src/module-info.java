@@ -1,8 +1,4 @@
-/**
- * 
- */
-/**
- * 
- */
-module chess_game_motor {
+module motor_chess_game {
+	requires junit;
+	requires org.junit.jupiter.api;
 }
