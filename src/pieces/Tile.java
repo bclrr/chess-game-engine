@@ -28,7 +28,7 @@ public class Tile implements Movement {
 	
 	
 	public boolean isEmpty() {
-		return myPiece.getPieceType() == PieceType.NOTHING || myPiece == null;
+		return myPiece.getPieceType() == PieceType.NONE || myPiece == null;
 	}
 
 	public boolean canMove(int srcX, int srcY, int destX, int destY, Tile[][] board) {

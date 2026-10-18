@@ -1,18 +1,13 @@
 package pieces.movements;
 
-import pieces.PieceColor;
 import pieces.Tile;
 
 public class PawnMovement implements Movement {
 
 	private int direction;
 	
-	public PawnMovement(PieceColor color) {
-		direction = 0;
-		if(color == PieceColor.BLACK) 
-			direction = 1;
-		if(color == PieceColor.WHITE)
-			direction = -1;
+	public PawnMovement(int direction) {
+		this.direction = direction;
 	}
 	
 	@Override

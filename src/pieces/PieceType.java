@@ -8,7 +8,7 @@ public enum PieceType {
 	BISHOP("B"),
 	KNIGHT("K"),
 	PAWN("P"),
-	NOTHING("N");
+	NONE("N");
 	
 	final String notation;
 	

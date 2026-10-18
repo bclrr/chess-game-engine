@@ -25,7 +25,6 @@ public class Board {
 		return new Board();
 	}
 	
-	
 	public void addPiece(int x, int y, Piece newPiece) {
 		chessBoard[x][y].changePiece(newPiece);
 	}
