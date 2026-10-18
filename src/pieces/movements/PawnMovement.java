@@ -1,6 +1,8 @@
 package pieces.movements;
 
-import pieces.Tile;
+import game.BoardView;
+import pieces.Piece;
+import pieces.PieceColor;
 
 public class PawnMovement implements Movement {
 
@@ -12,7 +14,7 @@ public class PawnMovement implements Movement {
 	
 	@Override
 	//TODO implement with GameState class
-	public boolean canMove(int srcX, int srcY, int destX, int destY, Tile[][] board) {
+	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		int difY = destY - srcY;
 		int difX = Math.abs(destX - srcX);
 
@@ -20,13 +22,17 @@ public class PawnMovement implements Movement {
 		if(difY * direction <= 0)
 			return false;
 		
-		boolean destEmpty = board[destY][destX].isEmpty();
-		boolean hasMoved = board[srcY][srcX].hasMoved();
+		boolean destEmpty = board.isEmpty(destX, destY);
+		Piece myPiece = board.get(srcX, srcY);
 		difY = Math.abs(difY);
 		
 		//Two squares on the first turn
 		if(difY == 2)
-			return !hasMoved && difX == 0 && destEmpty;
+			return
+				(
+					(myPiece.getPieceColor() == PieceColor.BLACK && srcY == 1) ||
+					(myPiece.getPieceColor() == PieceColor.WHITE && srcY == 6)
+				) && difX == 0 && destEmpty;
 
 		//Forward only
 		if(difY != 1)

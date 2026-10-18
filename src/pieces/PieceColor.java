@@ -4,7 +4,7 @@ public enum PieceColor {
 
 	WHITE("W"),
 	BLACK("B"),
-	NONE("N");
+	NONE(" ");
 	
 	final String notation;
 	

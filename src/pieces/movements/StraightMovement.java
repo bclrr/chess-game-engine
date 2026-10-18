@@ -1,6 +1,6 @@
 package pieces.movements;
 
-import pieces.Tile;
+import game.BoardView;
 
 public class StraightMovement implements Movement {
 
@@ -9,7 +9,7 @@ public class StraightMovement implements Movement {
 	}
 	
 	@Override
-	public boolean canMove(int srcX, int srcY, int destX, int destY, Tile[][] board) {
+	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		
 		int difX = Math.abs(srcX - destX);
 		int difY = Math.abs(srcY - destY);
@@ -38,7 +38,7 @@ public class StraightMovement implements Movement {
 		
 		for(int i = startX; i <= endX; i++) { 
 			for(int j = startY; j <= endY; j++) {
-				if(!board[j][i].isEmpty())
+				if(!board.isEmpty(i, j))
 					return false;
 			}
 		}

@@ -1,44 +1,46 @@
 package game;
 
 import java.util.LinkedList;
-
 import pieces.Piece;
-import pieces.Tile;
+import pieces.PieceType;
 
-public class Board {
+public class Board implements BoardView {
 
-	private Tile[][] chessBoard;
+	private Piece[][] pieces;
 	private LinkedList<GameState> gameStates;
 	
-	public Board() {
-		gameStates = new LinkedList<GameState>();
-		chessBoard = new Tile[8][8];
-		for(int i = 0; i < 8; i++) {
-			chessBoard[i] = new Tile[8];
-			for(int j = 0; j < 8; j++) {
-				chessBoard[i][j] = new Tile();
-			}
-		}
+	public Board(Piece[][] pieces) {
+		this.gameStates = new LinkedList<GameState>();
+		this.pieces = pieces;
+	}
+	 
+	public void changePiece(int x, int y, Piece newPiece) {
+		this.pieces[y][x] = newPiece;
 	}
 	
-	public static Board getTestBoard() {
-		return new Board();
+	@Override
+	public Piece get(int x, int y) {
+		return this.pieces[y][x];
 	}
-	
-	public void addPiece(int x, int y, Piece newPiece) {
-		chessBoard[x][y].changePiece(newPiece);
+
+	@Override
+	public boolean isEmpty(int x, int y) {
+		return get(x, y).getPieceType() == PieceType.NONE;
 	}
 
 	//TODO add gamestate for mooves like en passant
 	private boolean canMove(int srcX, int srcY, int destX, int destY) {
-		return chessBoard[srcX][srcY].canMove(srcX, srcY, destX, destY, chessBoard);
+		if(get(srcX, srcY).getPieceColor() == get(destX, destY).getPieceColor()) {
+			return false;
+		}
+		return get(srcX, srcY).canMove(srcX, srcY, destX, destY, this);
 	}
 	
 	public boolean[][] getMovements(int srcX, int srcY) {
 		boolean[][] movements =  new boolean[8][8];
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
-				movements[i][j] = canMove(srcX, srcY, i, j);
+				movements[j][i] = canMove(srcX, srcY, i, j);
 			}
 		}
 		return movements;
@@ -62,6 +64,20 @@ public class Board {
 			System.out.println(line);
 		}
 		System.out.println(betweenLine);	
+	}
+	
+	public void display() {
+		String betweenLine = "#" + "----#".repeat(8);
+		for(int i = 0; i < 8; i++) {
+			String line = "|";
+			for(int j = 0; j < 8; j++) {
+				line += " " + get(j, i).toString() + " |";
+			}
+			System.out.println(betweenLine);
+			System.out.println(line);
+		}
+		System.out.println(betweenLine);
+		
 	}
 	
 }

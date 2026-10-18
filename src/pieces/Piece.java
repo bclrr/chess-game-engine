@@ -1,5 +1,6 @@
  package pieces;
 
+import game.BoardView;
 import pieces.movements.*;
 
 public class Piece implements Movement {
@@ -16,7 +17,7 @@ public class Piece implements Movement {
 		this.hasMoved = false;
 	}
 	
-	public boolean canMove(int srcX, int srcY, int destX, int destY, Tile[][] board) {
+	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		for(Movement m : movements) {
 			if(m.canMove(srcX, srcY, destX, destY, board)) {
 				return true;

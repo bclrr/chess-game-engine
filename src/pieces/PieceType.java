@@ -6,9 +6,9 @@ public enum PieceType {
 	QUEEN("Q"),
 	ROOK("R"),
 	BISHOP("B"),
-	KNIGHT("K"),
+	KNIGHT("N"),
 	PAWN("P"),
-	NONE("N");
+	NONE(" ");
 	
 	final String notation;
 	

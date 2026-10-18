@@ -14,7 +14,7 @@ public class PieceFactory {
 	
 	private static final Piece NOTHING = new Piece(PieceType.NONE, PieceColor.NONE);
 	
-	public Piece create(PieceType type, PieceColor color) {
+	public static final Piece create(PieceType type, PieceColor color) {
 		
 		if(color == PieceColor.NONE) {
 			return NOTHING;
