@@ -36,5 +36,13 @@ public class Tile implements Movement {
 			return false;
 		return myPiece.canMove(srcX, srcY, destX, destY, board);
 	}
+	
+	public boolean hasMoved() {
+	    if(this.isEmpty()) {
+	    	return false;
+	    }
+	    return this.getPiece().hasMoved();
+	}
+	
 
 }

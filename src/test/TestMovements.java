@@ -2,6 +2,7 @@ package test;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import game.Board;
 import pieces.Bishop;
 import pieces.Knight;

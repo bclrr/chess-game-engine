@@ -7,10 +7,12 @@ public abstract class Piece implements Movement {
 	private PieceType pieceType;
 	private PieceColor pieceColor;
 	private Movement[] movements;
+	private boolean hasMoved;
 	
 	public Piece(PieceType _pieceType, PieceColor _pieceColor) {
 		this.pieceType = _pieceType;
 		this.pieceColor = _pieceColor;
+		this.hasMoved = false;
 	}
 	
 	public boolean canMove(int srcX, int srcY, int destX, int destY, Tile[][] board) {
@@ -42,6 +44,14 @@ public abstract class Piece implements Movement {
 	
 	protected void addMovements(Movement[] _movements) {
 		this.movements = _movements;
+	}
+	
+	public void notifyMovement() {
+		this.hasMoved = true;
+	}
+	
+	protected boolean hasMoved() {
+	    return this.hasMoved;
 	}
 	
 }
