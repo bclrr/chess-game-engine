@@ -1,25 +1,35 @@
 package game;
 
-import pieces.PieceColor;
-import pieces.PieceType;
+public class Move {
 
-public class GameState {
-
-	private int sourceX;
-	private int sourceY;
-	private int destinationX;
-	private int destinationY;
-	private PieceColor color;
-	private PieceType piece;
+	private int srcX;
+	private int srcY;
+	private int destX;
+	private int destY;
 	
 	
-	public GameState(int _sourceX, int _sourceY, int _destinationX, int _destinationY, PieceColor _color, PieceType _piece) {
-		sourceX = _sourceX;
-		sourceY = _sourceY;
-		destinationX = _destinationX;
-		destinationY = _destinationY;
-		color = _color;
-		piece = _piece;
+	public Move(int srcX, int srcY, int destX, int destY) {
+		this.srcX = srcX;
+		this.srcY = srcY;
+		this.destX = destX;
+		this.destY = destY;
+	}
+
+
+	public int getSrcX() {
+		return srcX;
+	}
+
+	public int getSrcY() {
+		return srcY;
+	}
+
+	public int getDestX() {
+		return destX;
+	}
+
+	public int getDestY() {
+		return destY;
 	}
 	
 }

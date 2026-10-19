@@ -1,16 +1,19 @@
 package game;
 
 import java.util.LinkedList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import pieces.Piece;
 import pieces.PieceType;
 
 public class Board implements BoardView {
 
 	private Piece[][] pieces;
-	private LinkedList<GameState> gameStates;
+	private List<Move> moves;
 	
 	public Board(Piece[][] pieces) {
-		this.gameStates = new LinkedList<GameState>();
+		this.moves = new LinkedList<Move>();
 		this.pieces = pieces;
 	}
 	 
@@ -28,7 +31,15 @@ public class Board implements BoardView {
 		return get(x, y).getPieceType() == PieceType.NONE;
 	}
 
-	//TODO add gamestate for mooves like en passant
+	@Override
+	public Move getLastMovement() {
+		try {
+			return this.moves.getLast();
+		} catch(NoSuchElementException e) {
+			return null;
+		}
+	}
+
 	private boolean canMove(int srcX, int srcY, int destX, int destY) {
 		if(get(srcX, srcY).getPieceColor() == get(destX, destY).getPieceColor()) {
 			return false;
@@ -40,7 +51,7 @@ public class Board implements BoardView {
 		boolean[][] movements =  new boolean[8][8];
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
-				movements[j][i] = canMove(srcX, srcY, i, j);
+				movements[i][j] = canMove(srcX, srcY, j, i);
 			}
 		}
 		return movements;
@@ -55,7 +66,7 @@ public class Board implements BoardView {
 		for(int i = 0; i < 8; i++) {
 			String line = "|";
 			for(int j = 0; j < 8; j++) {
-				if(i == srcX && j == srcY)
+				if(j == srcX && i == srcY)
 					line += " X |";
 				else
 					line += movements[i][j] ? " o |" : "   |";

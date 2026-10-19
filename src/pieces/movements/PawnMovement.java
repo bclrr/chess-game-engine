@@ -1,8 +1,10 @@
 package pieces.movements;
 
 import game.BoardView;
+import game.Move;
 import pieces.Piece;
 import pieces.PieceColor;
+import pieces.PieceType;
 
 public class PawnMovement implements Movement {
 
@@ -25,26 +27,35 @@ public class PawnMovement implements Movement {
 		boolean destEmpty = board.isEmpty(destX, destY);
 		Piece myPiece = board.get(srcX, srcY);
 		difY = Math.abs(difY);
-		
+
 		//Two squares on the first turn
-		if(difY == 2)
+		if(difY == 2) {
 			return
 				(
 					(myPiece.getPieceColor() == PieceColor.BLACK && srcY == 1) ||
 					(myPiece.getPieceColor() == PieceColor.WHITE && srcY == 6)
 				) && difX == 0 && destEmpty;
-
+		}
 		//Forward only
 		if(difY != 1)
 			return false;
 		
 		//Forward movement without blocked path
-		if(difX == 0)
+		if(difX == 0) {
 			return destEmpty;
+		}
 		
 		if(destEmpty) {
-			//TODO check en passant
-			return false;
+			Move move = board.getLastMovement();
+			if(move == null) {
+				return false;
+			}
+			Piece lastPiece = board.get(move.getDestX(), move.getDestY());
+			return
+				Math.abs(move.getDestY() - move.getSrcY()) == 2 &&
+				move.getDestX() - move.getSrcX() == 0 &&
+				lastPiece.getPieceType() == PieceType.PAWN &&
+				lastPiece.getPieceColor() != myPiece.getPieceColor();
 		}
 
 		return true;
