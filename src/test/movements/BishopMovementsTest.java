@@ -11,7 +11,7 @@ import pieces.PieceType;
 class BishopMovementsTest extends MovementsTest {
 
 	@Test
-	void testBishop() {
+	void bishopMoves() {
 		board.changePiece(4, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
 		boolean[][] expected = grid(
 			"o.......",

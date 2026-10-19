@@ -11,7 +11,7 @@ import pieces.PieceType;
 class RookMovementsTest extends MovementsTest {
 
 	@Test
-	void rookMovements() {
+	void rookMoves() {
 		board.changePiece(4, 4, PieceFactory.create(PieceType.ROOK, PieceColor.WHITE));
 		boolean[][] expected = grid(
 			"....o...",
