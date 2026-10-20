@@ -45,6 +45,7 @@ public class PawnMovement implements Movement {
 			return destEmpty;
 		}
 		
+		//en passant
 		if(destEmpty) {
 			Move move = board.getLastMovement();
 			if(move == null) {
