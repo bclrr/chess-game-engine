@@ -24,5 +24,43 @@ class BishopMovementsTest extends MovementsTest {
 			".o.....o");
 		assertArrayEquals(expected, board.getMovements(4, 4));
 	}
+	
+	@Test
+	void bishopBlockedByAlly() {
+		board.changePiece(4, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(6, 6, PieceFactory.create(PieceType.ROOK, PieceColor.WHITE));
+		board.changePiece(2, 2, PieceFactory.create(PieceType.ROOK, PieceColor.WHITE));
+		board.changePiece(2, 6, PieceFactory.create(PieceType.ROOK, PieceColor.WHITE));
+		board.changePiece(6, 2, PieceFactory.create(PieceType.ROOK, PieceColor.WHITE));
+		boolean[][] expected = grid(
+			"........",
+			"........",
+			"........",
+			"...o.o..",
+			"........",
+			"...o.o..",
+			"........",
+			"........");
+		assertArrayEquals(expected, board.getMovements(4, 4));
+	}
+	
+	@Test
+	void bishopTakingRook() {
+		board.changePiece(4, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(6, 6, PieceFactory.create(PieceType.ROOK, PieceColor.BLACK));
+		board.changePiece(2, 2, PieceFactory.create(PieceType.ROOK, PieceColor.BLACK));
+		board.changePiece(2, 6, PieceFactory.create(PieceType.ROOK, PieceColor.BLACK));
+		board.changePiece(6, 2, PieceFactory.create(PieceType.ROOK, PieceColor.BLACK));
+		boolean[][] expected = grid(
+			"........",
+			"........",
+			"..o...o.",
+			"...o.o..",
+			"........",
+			"...o.o..",
+			"..o...o.",
+			"........");
+		assertArrayEquals(expected, board.getMovements(4, 4));
+	}
 
 }

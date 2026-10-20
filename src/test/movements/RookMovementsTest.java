@@ -28,13 +28,16 @@ class RookMovementsTest extends MovementsTest {
 	@Test
 	void rookBlockedByAlly() {
 		board.changePiece(4, 4, PieceFactory.create(PieceType.ROOK, PieceColor.WHITE));
+		board.changePiece(4, 2, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
 		board.changePiece(4, 6, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(2, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(6, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
 		boolean[][] expected = grid(
+			"........",
+			"........",
+			"........",
 			"....o...",
-			"....o...",
-			"....o...",
-			"....o...",
-			"oooo.ooo",
+			"...o.o..",
 			"....o...",
 			"........",
 			"........");
@@ -44,13 +47,16 @@ class RookMovementsTest extends MovementsTest {
 	@Test
 	void rookTakingBishop() {
 		board.changePiece(4, 4, PieceFactory.create(PieceType.ROOK, PieceColor.WHITE));
+		board.changePiece(4, 2, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
 		board.changePiece(4, 6, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
+		board.changePiece(2, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
+		board.changePiece(6, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
 		boolean[][] expected = grid(
+			"........",
+			"........",
 			"....o...",
 			"....o...",
-			"....o...",
-			"....o...",
-			"oooo.ooo",
+			"..oo.oo.",
 			"....o...",
 			"....o...",
 			"........");

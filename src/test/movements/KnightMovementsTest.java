@@ -52,6 +52,13 @@ class KnightMovementsTest extends MovementsTest {
 	void knightTakingBishop() {
 		board.changePiece(4, 4, PieceFactory.create(PieceType.KNIGHT, PieceColor.WHITE));
 		board.changePiece(5, 6, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
+		board.changePiece(5, 2, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
+		board.changePiece(6, 5, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
+		board.changePiece(6, 3, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
+		board.changePiece(3, 6, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
+		board.changePiece(3, 2, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
+		board.changePiece(2, 5, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
+		board.changePiece(2, 3, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
 		
 		boolean[][] expected = grid(
 			"........",
@@ -69,15 +76,22 @@ class KnightMovementsTest extends MovementsTest {
 	void knightBlockedByAlly() {
 		board.changePiece(4, 4, PieceFactory.create(PieceType.KNIGHT, PieceColor.WHITE));
 		board.changePiece(5, 6, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(5, 2, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(6, 5, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(6, 3, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(3, 6, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(3, 2, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(2, 5, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(2, 3, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
 		
 		boolean[][] expected = grid(
 			"........",
 			"........",
-			"...o.o..",
-			"..o...o.",
 			"........",
-			"..o...o.",
-			"...o....",
+			"........",
+			"........",
+			"........",
+			"........",
 			"........");
 		assertArrayEquals(expected, board.getMovements(4, 4));
 	}
