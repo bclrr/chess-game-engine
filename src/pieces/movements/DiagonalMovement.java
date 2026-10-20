@@ -1,6 +1,6 @@
 package pieces.movements;
 
-import pieces.Tile;
+import game.BoardView;
 
 public class DiagonalMovement implements Movement {
 
@@ -9,7 +9,7 @@ public class DiagonalMovement implements Movement {
 	}
 	
 	@Override
-	public boolean canMove(int srcX, int srcY, int destX, int destY, Tile[][] board) {
+	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		int difX = Math.abs(srcX - destX);
 		int difY = Math.abs(srcY - destY);
 		if(difX != difY)
@@ -34,15 +34,16 @@ public class DiagonalMovement implements Movement {
 			startY++;
 			endY--;
 		}
+
 		for(int i = startX; i <= endX; i++) {
 			if(startY < endY) {
 				for(int j = startY; j <= endY; j++) {
-					if(!board[j][i].isEmpty())
+					if(!board.isEmpty(i, j))
 						return false;
 				}
 			} else {
 				for(int j = startY; j >= endY; j--) {
-					if(!board[j][i].isEmpty())
+					if(!board.isEmpty(i, j))
 						return false;
 				}
 			}

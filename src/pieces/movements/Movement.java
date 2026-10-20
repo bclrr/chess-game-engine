@@ -1,9 +1,9 @@
 package pieces.movements;
 
-import pieces.Tile;
+import game.BoardView;
 
 public interface Movement {
 		
-	public abstract boolean canMove(int srcX, int srcY, int destX, int destY, Tile[][] board);
+	public abstract boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board);
 	
 }
