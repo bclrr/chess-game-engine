@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import pieces.Piece;
+import pieces.PieceColor;
+import pieces.PieceFactory;
 import pieces.PieceType;
 
 public class Board implements BoardView {
@@ -56,5 +58,30 @@ public class Board implements BoardView {
 		}
 		return get(srcX, srcY).isValidMove(srcX, srcY, destX, destY, this);
 	}
+	
+	private boolean isLegalMove(int srcX, int srcY, int destX, int destY) {
+		//TODO
+		return false;
+	}
+	
+	public boolean move(int srcX, int srcY, int destX, int destY) {
+		if(!isValidMove(srcX, srcY, destX, destY)) {
+			return false;
+		}
+		
+		if(!isLegalMove(srcX, srcY, destX, destY)) {
+			return false;
+		}
+		
+		changePiece(destX, destY, get(srcX, srcY));
+		changePiece(srcX, srcY, PieceFactory.create(PieceType.NONE, PieceColor.NONE));
+		return moves.add(new Move(srcX, srcY, destX, destY));
+	}
+	
+	private boolean rollBack() {
+		//TODO
+		return false;
+	}
+	
 	
 }
