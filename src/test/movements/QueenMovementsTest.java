@@ -23,7 +23,7 @@ class QueenMovementsTest extends MovementsTest {
 			"...ooo..",
 			"..o.o.o.",
 			".o..o..o");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 

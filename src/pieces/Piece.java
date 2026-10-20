@@ -17,9 +17,9 @@ public class Piece implements Movement {
 		this.hasMoved = false;
 	}
 	
-	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
+	public boolean isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		for(Movement m : movements) {
-			if(m.canMove(srcX, srcY, destX, destY, board)) {
+			if(m.isValidMove(srcX, srcY, destX, destY, board)) {
 				return true;
 			}
 		}

@@ -9,7 +9,7 @@ public class DiagonalMovement implements Movement {
 	}
 	
 	@Override
-	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
+	public boolean isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		int difX = Math.abs(srcX - destX);
 		int difY = Math.abs(srcY - destY);
 		if(difX != difY)

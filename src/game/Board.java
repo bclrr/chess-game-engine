@@ -16,7 +16,7 @@ public class Board implements BoardView {
 		this.moves = new LinkedList<Move>();
 		this.pieces = pieces;
 	}
-	 
+
 	public void changePiece(int x, int y, Piece newPiece) {
 		this.pieces[y][x] = newPiece;
 	}
@@ -40,55 +40,21 @@ public class Board implements BoardView {
 		}
 	}
 
-	private boolean canMove(int srcX, int srcY, int destX, int destY) {
-		if(get(srcX, srcY).getPieceColor() == get(destX, destY).getPieceColor()) {
-			return false;
-		}
-		return get(srcX, srcY).canMove(srcX, srcY, destX, destY, this);
-	}
-	
-	public boolean[][] getMovements(int srcX, int srcY) {
+	public boolean[][] getMoves(int x, int y) {
 		boolean[][] movements =  new boolean[8][8];
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
-				movements[i][j] = canMove(srcX, srcY, j, i);
+				movements[i][j] = isValidMove(x, y, j, i);
 			}
 		}
 		return movements;
 	}
-	
-	public void displayMovements(int srcX, int srcY) {
-		boolean[][] movements = getMovements(srcX, srcY);
-		String betweenLine = "#";
-		for(int i = 0; i < 8; i++) {
-			betweenLine += "---#";
+
+	private boolean isValidMove(int srcX, int srcY, int destX, int destY) {
+		if(get(srcX, srcY).getPieceColor() == get(destX, destY).getPieceColor()) {
+			return false;
 		}
-		for(int i = 0; i < 8; i++) {
-			String line = "|";
-			for(int j = 0; j < 8; j++) {
-				if(j == srcX && i == srcY)
-					line += " X |";
-				else
-					line += movements[i][j] ? " o |" : "   |";
-			}
-			System.out.println(betweenLine);
-			System.out.println(line);
-		}
-		System.out.println(betweenLine);	
-	}
-	
-	public void display() {
-		String betweenLine = "#" + "----#".repeat(8);
-		for(int i = 0; i < 8; i++) {
-			String line = "|";
-			for(int j = 0; j < 8; j++) {
-				line += " " + get(j, i).toString() + " |";
-			}
-			System.out.println(betweenLine);
-			System.out.println(line);
-		}
-		System.out.println(betweenLine);
-		
+		return get(srcX, srcY).isValidMove(srcX, srcY, destX, destY, this);
 	}
 	
 }

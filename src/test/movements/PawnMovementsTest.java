@@ -22,7 +22,7 @@ class PawnMovementsTest extends MovementsTest {
 			"....o...",
 			"........",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 6));
+		assertArrayEquals(expected, board.getMoves(4, 6));
 	}
 	
 	@Test
@@ -37,7 +37,7 @@ class PawnMovementsTest extends MovementsTest {
 			"........",
 			"........",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 1));
+		assertArrayEquals(expected, board.getMoves(4, 1));
 	}
 	
 	@Test
@@ -54,7 +54,7 @@ class PawnMovementsTest extends MovementsTest {
 			"........",
 			"........",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 	@Test
@@ -71,7 +71,7 @@ class PawnMovementsTest extends MovementsTest {
 			"...ooo..",
 			"........",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 	@Test
@@ -88,7 +88,7 @@ class PawnMovementsTest extends MovementsTest {
 			"........",
 			"........",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 	@Test
@@ -105,7 +105,7 @@ class PawnMovementsTest extends MovementsTest {
 			".....o..",
 			"........",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 
 }

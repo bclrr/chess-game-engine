@@ -16,7 +16,7 @@ public class PawnMovement implements Movement {
 	
 	@Override
 	//TODO implement with GameState class
-	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
+	public boolean isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		int difY = destY - srcY;
 		int difX = Math.abs(destX - srcX);
 

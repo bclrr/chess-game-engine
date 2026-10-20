@@ -22,7 +22,7 @@ class RookMovementsTest extends MovementsTest {
 			"....o...",
 			"....o...",
 			"....o...");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 	@Test
@@ -41,7 +41,7 @@ class RookMovementsTest extends MovementsTest {
 			"....o...",
 			"........",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 	@Test
@@ -60,7 +60,7 @@ class RookMovementsTest extends MovementsTest {
 			"....o...",
 			"....o...",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 
 }

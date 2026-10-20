@@ -22,7 +22,7 @@ class KnightMovementsTest extends MovementsTest {
 			"..o...o.",
 			"...o.o..",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 
 	@Test
@@ -45,7 +45,7 @@ class KnightMovementsTest extends MovementsTest {
 			"..o...o.",
 			"...o.o..",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 	@Test
@@ -69,7 +69,7 @@ class KnightMovementsTest extends MovementsTest {
 			"..o...o.",
 			"...o.o..",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 	@Test
@@ -93,7 +93,7 @@ class KnightMovementsTest extends MovementsTest {
 			"........",
 			"........",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 
 }
