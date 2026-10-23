@@ -11,37 +11,28 @@ public class StraightMovement implements Movement {
 	@Override
 	public MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		
-		int difX = Math.abs(srcX - destX);
-		int difY = Math.abs(srcY - destY);
-		if(difX > 0 && difY > 0)
+		int difX = destX - srcX;
+		int difY = destY - srcY;
+
+		if((difX != 0) == (difY != 0)) {
 			return MovementType.INVALID;
-		
-		int startX = srcX;
-		int startY = srcY;
-		int endX = destX;
-		int endY = destY;
-		
-		if(srcX > destX || srcY > destY) {
-			startX = destX;
-			startY = destY;
-			endX = srcX;
-			endY = srcY;
 		}
-		
-		if(difX > 0) {
-			startX++;
-			endX--;
-		} else {
-			startY++;
-			endY--;
-		}
-		
-		for(int i = startX; i <= endX; i++) { 
-			for(int j = startY; j <= endY; j++) {
-				if(!board.isEmpty(i, j))
-					return MovementType.INVALID;
+
+		int stepX = Integer.signum(difX);
+		int stepY = Integer.signum(difY);
+
+		int x = srcX + stepX;
+		int y = srcY + stepY;
+
+		while(x != destX || y != destY) {
+			if(!board.isEmpty(x, y)) {
+				return MovementType.INVALID;
 			}
+
+			x += stepX;
+			y += stepY;
 		}
+
 		return MovementType.NORMAL;
 	}
 

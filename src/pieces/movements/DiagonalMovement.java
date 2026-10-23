@@ -10,43 +10,25 @@ public class DiagonalMovement implements Movement {
 	
 	@Override
 	public MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
+
 		int difX = Math.abs(srcX - destX);
 		int difY = Math.abs(srcY - destY);
+
 		if(difX != difY)
 			return MovementType.INVALID;
 		
-		int startX = srcX;
-		int startY = srcY;
-		int endX = destX;
-		int endY = destY;
-		if(srcX > destX) {
-			startX = destX;
-			startY = destY;
-			endX = srcX;
-			endY = srcY;
-		}
-		startX++;
-		endX--;
-		if(startY > endY) {
-			startY--;
-			endY++;
-		} else {
-			startY++;
-			endY--;
-		}
+		int stepX = srcX < destX ? 1 : -1;
+		int stepY = srcY < destY ? 1 : -1;
 
-		for(int i = startX; i <= endX; i++) {
-			if(startY < endY) {
-				for(int j = startY; j <= endY; j++) {
-					if(!board.isEmpty(i, j))
-						return MovementType.INVALID;
-				}
-			} else {
-				for(int j = startY; j >= endY; j--) {
-					if(!board.isEmpty(i, j))
-						return MovementType.INVALID;
-				}
+		int x = srcX + stepX;
+		int y = srcY + stepY;
+
+		while(x != destX) {
+			if(!board.isEmpty(x, y)) {
+				return MovementType.INVALID;
 			}
+			x += stepX;
+			y += stepY;
 		}
 		return MovementType.NORMAL;
 	}

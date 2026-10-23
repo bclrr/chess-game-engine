@@ -15,7 +15,7 @@ public class PawnMovement implements Movement {
 	}
 	
 	@Override
-	//TODO implement with GameState class
+	//TODO PROMOTION type to add
 	public MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		int difY = destY - srcY;
 		int difX = Math.abs(destX - srcX);
@@ -31,10 +31,11 @@ public class PawnMovement implements Movement {
 		//Two squares on the first turn
 		if(difY == 2) {
 			Piece myPiece = board.get(srcX, srcY);
+			boolean pathClear = board.isEmpty(srcX, srcY + direction);
 			boolean isValid = (
 					(myPiece.getColor() == PieceColor.BLACK && srcY == 1) ||
 					(myPiece.getColor() == PieceColor.WHITE && srcY == 6)
-				) && difX == 0 && destEmpty;
+				) && difX == 0 && destEmpty && pathClear;
 			return isValid ? MovementType.DOUBLE_PUSH : MovementType.INVALID;
 		}
 
