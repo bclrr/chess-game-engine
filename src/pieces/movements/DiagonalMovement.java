@@ -11,14 +11,15 @@ public class DiagonalMovement implements Movement {
 	@Override
 	public MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 
-		int difX = Math.abs(srcX - destX);
-		int difY = Math.abs(srcY - destY);
+		int difX = destX - srcX;
+		int difY = destY - srcY;
 
-		if(difX != difY)
+		if(difX != difY && difX * -1 != difY) {
 			return MovementType.INVALID;
+		}
 		
-		int stepX = srcX < destX ? 1 : -1;
-		int stepY = srcY < destY ? 1 : -1;
+		int stepX = Integer.signum(difX);
+		int stepY = Integer.signum(difY);
 
 		int x = srcX + stepX;
 		int y = srcY + stepY;
@@ -27,9 +28,11 @@ public class DiagonalMovement implements Movement {
 			if(!board.isEmpty(x, y)) {
 				return MovementType.INVALID;
 			}
+	
 			x += stepX;
 			y += stepY;
 		}
+
 		return MovementType.NORMAL;
 	}
 
