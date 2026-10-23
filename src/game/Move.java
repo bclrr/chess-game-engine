@@ -1,11 +1,15 @@
 package game;
 
+import pieces.movements.MovementType;
+
 public class Move {
 
 	private int srcX;
 	private int srcY;
 	private int destX;
 	private int destY;
+	private MovementType type;
+	
 	
 	
 	public Move(int srcX, int srcY, int destX, int destY) {
@@ -30,6 +34,11 @@ public class Move {
 
 	public int getDestY() {
 		return destY;
+	}
+
+
+	public MovementType getType() {
+		return type;
 	}
 	
 }

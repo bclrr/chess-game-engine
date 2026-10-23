@@ -16,50 +16,59 @@ public class PawnMovement implements Movement {
 	
 	@Override
 	//TODO implement with GameState class
-	public boolean isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
+	public MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		int difY = destY - srcY;
 		int difX = Math.abs(destX - srcX);
 
 		//check destination same direction than the color of the piece (white -1; black 1)
-		if(difY * direction <= 0)
-			return false;
-		
-		boolean destEmpty = board.isEmpty(destX, destY);
-		Piece myPiece = board.get(srcX, srcY);
+		if(difY * direction <= 0) {
+			return MovementType.INVALID;
+		}
+
 		difY = Math.abs(difY);
+		boolean destEmpty = board.isEmpty(destX, destY);
 
 		//Two squares on the first turn
 		if(difY == 2) {
-			return
-				(
-					(myPiece.getPieceColor() == PieceColor.BLACK && srcY == 1) ||
-					(myPiece.getPieceColor() == PieceColor.WHITE && srcY == 6)
+			Piece myPiece = board.get(srcX, srcY);
+			boolean isValid = (
+					(myPiece.getColor() == PieceColor.BLACK && srcY == 1) ||
+					(myPiece.getColor() == PieceColor.WHITE && srcY == 6)
 				) && difX == 0 && destEmpty;
-		}
-		//Forward only
-		if(difY != 1)
-			return false;
-		
-		//Forward movement without blocked path
-		if(difX == 0) {
-			return destEmpty;
-		}
-		
-		//en passant
-		if(destEmpty) {
-			Move move = board.getLastMovement();
-			if(move == null) {
-				return false;
-			}
-			Piece lastPiece = board.get(move.getDestX(), move.getDestY());
-			return
-				Math.abs(move.getDestY() - move.getSrcY()) == 2 &&
-				move.getDestX() - move.getSrcX() == 0 &&
-				lastPiece.getPieceType() == PieceType.PAWN &&
-				lastPiece.getPieceColor() != myPiece.getPieceColor();
+			return isValid ? MovementType.DOUBLE_PUSH : MovementType.INVALID;
 		}
 
-		return true;
+		//Advancing only one square for all subsequent moves
+		if(difY != 1) {
+			return MovementType.INVALID;
+		}
+
+		//Forward movement without blocked path
+		if(difX == 0) {
+			return destEmpty ? MovementType.NORMAL : MovementType.INVALID;
+		}
+		
+		//Only taking moves remaining
+		if(difX != 1) {
+			return MovementType.INVALID;
+		}
+		
+		//Taking move
+		if(!destEmpty) {
+			return MovementType.NORMAL;
+		}
+
+		//En passant
+		Move move = board.getLastMovement();
+		if(move == null) {
+			return MovementType.INVALID;
+		}
+		
+		if(move.getType() != MovementType.DOUBLE_PUSH) {
+			return MovementType.INVALID;
+		}
+		
+		return move.getDestY() == srcY && Math.abs(move.getDestX() - destX) == 0 ? MovementType.EN_PASSANT : MovementType.INVALID;
 	}
 
 }

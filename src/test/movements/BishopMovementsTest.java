@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import org.junit.jupiter.api.Test;
 
+import game.BoardPrinter;
 import pieces.PieceColor;
 import pieces.PieceFactory;
 import pieces.PieceType;
@@ -62,5 +63,4 @@ class BishopMovementsTest extends MovementsTest {
 			"........");
 		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
-
 }

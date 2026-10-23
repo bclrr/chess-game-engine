@@ -17,24 +17,25 @@ public class Piece implements Movement {
 		this.hasMoved = false;
 	}
 	
-	public boolean isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
+	public MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		for(Movement m : movements) {
-			if(m.isValidMove(srcX, srcY, destX, destY, board)) {
-				return true;
+			MovementType res = m.isValidMove(srcX, srcY, destX, destY, board);
+			if(res != MovementType.INVALID) {
+				return res;
 			}
 		}
-		return false;
+		return MovementType.INVALID;
 	}
 	
 	public String toString() {
 		return pieceType.toString() + pieceColor.toString();
 	}
 	
-	public PieceType getPieceType() {
+	public PieceType getType() {
 		return pieceType;
 	}
 	
-	public PieceColor getPieceColor() {
+	public PieceColor getColor() {
 		return pieceColor;
 	}
 	

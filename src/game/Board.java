@@ -8,6 +8,7 @@ import pieces.Piece;
 import pieces.PieceColor;
 import pieces.PieceFactory;
 import pieces.PieceType;
+import pieces.movements.MovementType;
 
 public class Board implements BoardView {
 
@@ -30,7 +31,7 @@ public class Board implements BoardView {
 
 	@Override
 	public boolean isEmpty(int x, int y) {
-		return get(x, y).getPieceType() == PieceType.NONE;
+		return get(x, y).getType() == PieceType.NONE;
 	}
 
 	@Override
@@ -46,15 +47,15 @@ public class Board implements BoardView {
 		boolean[][] movements =  new boolean[8][8];
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
-				movements[i][j] = isValidMove(x, y, j, i);
+				movements[i][j] = isValidMove(x, y, j, i) != MovementType.INVALID;
 			}
 		}
 		return movements;
 	}
 
-	private boolean isValidMove(int srcX, int srcY, int destX, int destY) {
-		if(get(srcX, srcY).getPieceColor() == get(destX, destY).getPieceColor()) {
-			return false;
+	private MovementType isValidMove(int srcX, int srcY, int destX, int destY) {
+		if(get(srcX, srcY).getColor() == get(destX, destY).getColor()) {
+			return MovementType.INVALID;
 		}
 		return get(srcX, srcY).isValidMove(srcX, srcY, destX, destY, this);
 	}
@@ -65,7 +66,8 @@ public class Board implements BoardView {
 	}
 	
 	public boolean move(int srcX, int srcY, int destX, int destY) {
-		if(!isValidMove(srcX, srcY, destX, destY)) {
+		MovementType validMove = isValidMove(srcX, srcY, destX, destY);
+		if(validMove == MovementType.INVALID) {
 			return false;
 		}
 		

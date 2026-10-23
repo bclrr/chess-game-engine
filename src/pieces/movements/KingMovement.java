@@ -9,17 +9,17 @@ public class KingMovement implements Movement {
 	}
 	
 	@Override
-	public boolean isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
+	public MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
 		int difX = Math.abs(srcX - destX);
 		int difY = Math.abs(srcY - destY);
 		if(difX == 1 || difY == 1) {
-			return true;
+			return MovementType.NORMAL;
 		}
 		if(difY != 0) {
-			return false;
+			return MovementType.INVALID;
 		}
 		
-		return false;
+		return MovementType.INVALID;
 	}
 	
 	private boolean canShortCastle() {
