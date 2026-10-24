@@ -1,6 +1,7 @@
  package pieces;
 
 import game.BoardView;
+import game.Position;
 import pieces.movements.*;
 
 public class Piece implements Movement {
@@ -10,31 +11,32 @@ public class Piece implements Movement {
 	private Movement[] movements;
 	private boolean hasMoved;
 	
-	public Piece(PieceType _pieceType, PieceColor _pieceColor, Movement... movements) {
-		this.pieceType = _pieceType;
-		this.pieceColor = _pieceColor;
+	public Piece(PieceType pieceType, PieceColor pieceColor, Movement... movements) {
+		this.pieceType = pieceType;
+		this.pieceColor = pieceColor;
 		this.movements = (movements == null) ? new Movement[0] : movements;
 		this.hasMoved = false;
 	}
 	
-	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
+	public MovementType isValidMove(Position src, Position dest, BoardView board) {
 		for(Movement m : movements) {
-			if(m.canMove(srcX, srcY, destX, destY, board)) {
-				return true;
+			MovementType res = m.isValidMove(src, dest, board);
+			if(res != MovementType.INVALID) {
+				return res;
 			}
 		}
-		return false;
+		return MovementType.INVALID;
 	}
 	
 	public String toString() {
 		return pieceType.toString() + pieceColor.toString();
 	}
 	
-	public PieceType getPieceType() {
+	public PieceType type() {
 		return pieceType;
 	}
 	
-	public PieceColor getPieceColor() {
+	public PieceColor color() {
 		return pieceColor;
 	}
 	

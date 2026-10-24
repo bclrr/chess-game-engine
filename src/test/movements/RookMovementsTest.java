@@ -12,7 +12,7 @@ class RookMovementsTest extends MovementsTest {
 
 	@Test
 	void rookMoves() {
-		board.changePiece(4, 4, PieceFactory.create(PieceType.ROOK, PieceColor.WHITE));
+		board.changePiece(4, 4, PieceType.ROOK, PieceColor.WHITE);
 		boolean[][] expected = grid(
 			"....o...",
 			"....o...",
@@ -22,16 +22,16 @@ class RookMovementsTest extends MovementsTest {
 			"....o...",
 			"....o...",
 			"....o...");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 	@Test
 	void rookBlockedByAlly() {
-		board.changePiece(4, 4, PieceFactory.create(PieceType.ROOK, PieceColor.WHITE));
-		board.changePiece(4, 2, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
-		board.changePiece(4, 6, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
-		board.changePiece(2, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
-		board.changePiece(6, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.WHITE));
+		board.changePiece(4, 4, PieceType.ROOK, PieceColor.WHITE);
+		board.changePiece(4, 2, PieceType.BISHOP, PieceColor.WHITE);
+		board.changePiece(4, 6, PieceType.BISHOP, PieceColor.WHITE);
+		board.changePiece(2, 4, PieceType.BISHOP, PieceColor.WHITE);
+		board.changePiece(6, 4, PieceType.BISHOP, PieceColor.WHITE);
 		boolean[][] expected = grid(
 			"........",
 			"........",
@@ -41,16 +41,16 @@ class RookMovementsTest extends MovementsTest {
 			"....o...",
 			"........",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 	@Test
 	void rookTakingBishop() {
-		board.changePiece(4, 4, PieceFactory.create(PieceType.ROOK, PieceColor.WHITE));
-		board.changePiece(4, 2, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
-		board.changePiece(4, 6, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
-		board.changePiece(2, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
-		board.changePiece(6, 4, PieceFactory.create(PieceType.BISHOP, PieceColor.BLACK));
+		board.changePiece(4, 4, PieceType.ROOK, PieceColor.WHITE);
+		board.changePiece(4, 2, PieceType.BISHOP, PieceColor.BLACK);
+		board.changePiece(4, 6, PieceType.BISHOP, PieceColor.BLACK);
+		board.changePiece(2, 4, PieceType.BISHOP, PieceColor.BLACK);
+		board.changePiece(6, 4, PieceType.BISHOP, PieceColor.BLACK);
 		boolean[][] expected = grid(
 			"........",
 			"........",
@@ -60,7 +60,7 @@ class RookMovementsTest extends MovementsTest {
 			"....o...",
 			"....o...",
 			"........");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 
 }

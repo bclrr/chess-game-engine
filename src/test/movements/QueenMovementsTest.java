@@ -13,7 +13,7 @@ class QueenMovementsTest extends MovementsTest {
 
 	@Test
 	void queenMoves() {
-		board.changePiece(4, 4, PieceFactory.create(PieceType.QUEEN, PieceColor.WHITE));
+		board.changePiece(4, 4, PieceType.QUEEN, PieceColor.WHITE);
 		boolean[][] expected = grid(
 			"o...o...",
 			".o..o..o",
@@ -23,7 +23,7 @@ class QueenMovementsTest extends MovementsTest {
 			"...ooo..",
 			"..o.o.o.",
 			".o..o..o");
-		assertArrayEquals(expected, board.getMovements(4, 4));
+		assertArrayEquals(expected, board.getMoves(4, 4));
 	}
 	
 

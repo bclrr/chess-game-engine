@@ -2,6 +2,7 @@ package pieces.movements;
 
 import game.BoardView;
 import game.Move;
+import game.Position;
 import pieces.Piece;
 import pieces.PieceColor;
 import pieces.PieceType;
@@ -15,51 +16,64 @@ public class PawnMovement implements Movement {
 	}
 	
 	@Override
-	//TODO implement with GameState class
-	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
-		int difY = destY - srcY;
-		int difX = Math.abs(destX - srcX);
+	//TODO PROMOTION type to add
+	public MovementType isValidMove(Position src, Position dest, BoardView board) {
+		Position dif = dest.minus(src);
 
 		//check destination same direction than the color of the piece (white -1; black 1)
-		if(difY * direction <= 0)
-			return false;
-		
-		boolean destEmpty = board.isEmpty(destX, destY);
-		Piece myPiece = board.get(srcX, srcY);
-		difY = Math.abs(difY);
+		if(dif.y() * direction <= 0) {
+			return MovementType.INVALID;
+		}
+
+		dif = dif.abs();
+		boolean destEmpty = board.isEmpty(dest);
 
 		//Two squares on the first turn
-		if(difY == 2) {
-			return
-				(
-					(myPiece.getPieceColor() == PieceColor.BLACK && srcY == 1) ||
-					(myPiece.getPieceColor() == PieceColor.WHITE && srcY == 6)
-				) && difX == 0 && destEmpty;
-		}
-		//Forward only
-		if(difY != 1)
-			return false;
-		
-		//Forward movement without blocked path
-		if(difX == 0) {
-			return destEmpty;
-		}
-		
-		//en passant
-		if(destEmpty) {
-			Move move = board.getLastMovement();
-			if(move == null) {
-				return false;
-			}
-			Piece lastPiece = board.get(move.getDestX(), move.getDestY());
-			return
-				Math.abs(move.getDestY() - move.getSrcY()) == 2 &&
-				move.getDestX() - move.getSrcX() == 0 &&
-				lastPiece.getPieceType() == PieceType.PAWN &&
-				lastPiece.getPieceColor() != myPiece.getPieceColor();
+		if(dif.y() == 2) {
+			Piece myPiece = board.get(src);
+			boolean pathClear = board.isEmpty(src.plus(0, direction));
+			boolean isValid = (
+					(myPiece.color() == PieceColor.BLACK && src.y() == 1) ||
+					(myPiece.color() == PieceColor.WHITE && src.y() == 6)
+				) && dif.x() == 0 && destEmpty && pathClear;
+			return isValid ? MovementType.DOUBLE_PUSH : MovementType.INVALID;
 		}
 
-		return true;
+		//Advancing only one square for all subsequent moves
+		if(dif.y() != 1) {
+			return MovementType.INVALID;
+		}
+
+		//Forward movement without blocked path
+		if(dif.x() == 0) {
+			return destEmpty ? MovementType.NORMAL : MovementType.INVALID;
+		}
+		
+		//Only taking moves remaining
+		if(dif.x() != 1) {
+			return MovementType.INVALID;
+		}
+		
+		//Taking move
+		if(!destEmpty) {
+			return MovementType.NORMAL;
+		}
+
+		//En passant
+		Move move = board.getLastMovement();
+		if(move == null) {
+			return MovementType.INVALID;
+		}
+		
+		if(move.getType() != MovementType.DOUBLE_PUSH) {
+			return MovementType.INVALID;
+		}
+		
+		if(move.dest().y() == src.y() && move.dest().x() == dest.x()) {
+			return MovementType.EN_PASSANT;
+		}
+
+		return MovementType.INVALID;
 	}
 
 }

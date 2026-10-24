@@ -1,35 +1,30 @@
 package game;
 
+import pieces.movements.MovementType;
+
 public class Move {
 
-	private int srcX;
-	private int srcY;
-	private int destX;
-	private int destY;
+	private Position src;
+	private Position dest;
+	private MovementType type;
 	
-	
-	public Move(int srcX, int srcY, int destX, int destY) {
-		this.srcX = srcX;
-		this.srcY = srcY;
-		this.destX = destX;
-		this.destY = destY;
+	public Move(Position src, Position dest, MovementType type) {
+		this.src = src;
+		this.dest = dest;
+		this.type = type;
 	}
 
 
-	public int getSrcX() {
-		return srcX;
+	public Position src() {
+		return src;
 	}
 
-	public int getSrcY() {
-		return srcY;
+	public Position dest() {
+		return dest;
 	}
 
-	public int getDestX() {
-		return destX;
-	}
-
-	public int getDestY() {
-		return destY;
+	public MovementType getType() {
+		return type;
 	}
 	
 }

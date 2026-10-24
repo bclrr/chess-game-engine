@@ -1,6 +1,7 @@
 package pieces.movements;
 
 import game.BoardView;
+import game.Position;
 
 public class KnightMovement implements Movement {
 
@@ -9,10 +10,9 @@ public class KnightMovement implements Movement {
 	}
 	
 	@Override
-	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
-		int difX = Math.abs(srcX - destX);
-		int difY = Math.abs(srcY - destY);
-		return (difX == 2 && difY == 1) || (difX == 1 && difY == 2);
+	public MovementType isValidMove(Position src, Position dest, BoardView board) {
+		Position dif = dest.minus(src).abs();
+		return (dif.x() == 2 && dif.y() == 1) || (dif.x() == 1 && dif.y() == 2) ? MovementType.NORMAL : MovementType.INVALID;
 	}
 
 }

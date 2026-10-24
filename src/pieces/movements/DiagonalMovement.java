@@ -1,6 +1,7 @@
 package pieces.movements;
 
 import game.BoardView;
+import game.Position;
 
 public class DiagonalMovement implements Movement {
 
@@ -9,46 +10,26 @@ public class DiagonalMovement implements Movement {
 	}
 	
 	@Override
-	public boolean canMove(int srcX, int srcY, int destX, int destY, BoardView board) {
-		int difX = Math.abs(srcX - destX);
-		int difY = Math.abs(srcY - destY);
-		if(difX != difY)
-			return false;
-		
-		int startX = srcX;
-		int startY = srcY;
-		int endX = destX;
-		int endY = destY;
-		if(srcX > destX) {
-			startX = destX;
-			startY = destY;
-			endX = srcX;
-			endY = srcY;
+	public MovementType isValidMove(Position src, Position dest, BoardView board) {
+
+		Position dif = dest.minus(src);
+
+		if(dif.x() != dif.y() && dif.x() * -1 != dif.y()) {
+			return MovementType.INVALID;
 		}
-		startX++;
-		endX--;
-		if(startY > endY) {
-			startY--;
-			endY++;
-		} else {
-			startY++;
-			endY--;
+		
+		Position step = dif.step();
+		Position pos = src.plus(step);
+
+		while(pos.x() != dest.x()) {
+			if(!board.isEmpty(pos)) {
+				return MovementType.INVALID;
+			}
+	
+			pos = pos.plus(step);
 		}
 
-		for(int i = startX; i <= endX; i++) {
-			if(startY < endY) {
-				for(int j = startY; j <= endY; j++) {
-					if(!board.isEmpty(i, j))
-						return false;
-				}
-			} else {
-				for(int j = startY; j >= endY; j--) {
-					if(!board.isEmpty(i, j))
-						return false;
-				}
-			}
-		}
-		return true;
+		return MovementType.NORMAL;
 	}
 
 }

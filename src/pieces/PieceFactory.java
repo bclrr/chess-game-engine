@@ -41,4 +41,8 @@ public class PieceFactory {
 				throw new IllegalArgumentException("Type de pièce inconnu : " + type);
 		}
 	}
+	
+	public static final Piece empty() {
+		return NOTHING;
+	}
 }
