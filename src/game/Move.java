@@ -10,13 +10,12 @@ public class Move {
 	private int destY;
 	private MovementType type;
 	
-	
-	
-	public Move(int srcX, int srcY, int destX, int destY) {
+	public Move(int srcX, int srcY, int destX, int destY, MovementType type) {
 		this.srcX = srcX;
 		this.srcY = srcY;
 		this.destX = destX;
 		this.destY = destY;
+		this.type = type;
 	}
 
 

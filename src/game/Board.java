@@ -66,8 +66,8 @@ public class Board implements BoardView {
 	}
 	
 	public boolean move(int srcX, int srcY, int destX, int destY) {
-		MovementType validMove = isValidMove(srcX, srcY, destX, destY);
-		if(validMove == MovementType.INVALID) {
+		MovementType moveType = isValidMove(srcX, srcY, destX, destY);
+		if(moveType == MovementType.INVALID) {
 			return false;
 		}
 		
@@ -75,13 +75,21 @@ public class Board implements BoardView {
 			return false;
 		}
 		
-		changePiece(destX, destY, get(srcX, srcY));
-		changePiece(srcX, srcY, PieceFactory.create(PieceType.NONE, PieceColor.NONE));
-		return moves.add(new Move(srcX, srcY, destX, destY));
+		return apply(new Move(srcX, srcY, destX, destY, moveType));
+	}
+	
+	private boolean apply(Move move) {
+		changePiece(move.getDestX(), move.getDestY(), get(move.getSrcX(), move.getSrcY()));
+		changePiece(move.getSrcX(), move.getSrcY(), PieceFactory.empty());
+		return moves.add(move);
 	}
 	
 	private boolean rollBack() {
-		//TODO
+		Move lastMove = this.getLastMovement();
+		if(lastMove == null) {
+			return true;
+		}
+
 		return false;
 	}
 	
