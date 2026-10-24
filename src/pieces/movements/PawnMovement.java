@@ -2,6 +2,7 @@ package pieces.movements;
 
 import game.BoardView;
 import game.Move;
+import game.Position;
 import pieces.Piece;
 import pieces.PieceColor;
 import pieces.PieceType;
@@ -16,41 +17,40 @@ public class PawnMovement implements Movement {
 	
 	@Override
 	//TODO PROMOTION type to add
-	public MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
-		int difY = destY - srcY;
-		int difX = Math.abs(destX - srcX);
+	public MovementType isValidMove(Position src, Position dest, BoardView board) {
+		Position dif = dest.minus(src);
 
 		//check destination same direction than the color of the piece (white -1; black 1)
-		if(difY * direction <= 0) {
+		if(dif.y() * direction <= 0) {
 			return MovementType.INVALID;
 		}
 
-		difY = Math.abs(difY);
-		boolean destEmpty = board.isEmpty(destX, destY);
+		dif = dif.abs();
+		boolean destEmpty = board.isEmpty(dest);
 
 		//Two squares on the first turn
-		if(difY == 2) {
-			Piece myPiece = board.get(srcX, srcY);
-			boolean pathClear = board.isEmpty(srcX, srcY + direction);
+		if(dif.y() == 2) {
+			Piece myPiece = board.get(src);
+			boolean pathClear = board.isEmpty(src.plus(0, direction));
 			boolean isValid = (
-					(myPiece.getColor() == PieceColor.BLACK && srcY == 1) ||
-					(myPiece.getColor() == PieceColor.WHITE && srcY == 6)
-				) && difX == 0 && destEmpty && pathClear;
+					(myPiece.color() == PieceColor.BLACK && src.y() == 1) ||
+					(myPiece.color() == PieceColor.WHITE && src.y() == 6)
+				) && dif.x() == 0 && destEmpty && pathClear;
 			return isValid ? MovementType.DOUBLE_PUSH : MovementType.INVALID;
 		}
 
 		//Advancing only one square for all subsequent moves
-		if(difY != 1) {
+		if(dif.y() != 1) {
 			return MovementType.INVALID;
 		}
 
 		//Forward movement without blocked path
-		if(difX == 0) {
+		if(dif.x() == 0) {
 			return destEmpty ? MovementType.NORMAL : MovementType.INVALID;
 		}
 		
 		//Only taking moves remaining
-		if(difX != 1) {
+		if(dif.x() != 1) {
 			return MovementType.INVALID;
 		}
 		
@@ -69,7 +69,11 @@ public class PawnMovement implements Movement {
 			return MovementType.INVALID;
 		}
 		
-		return move.getDestY() == srcY && Math.abs(move.getDestX() - destX) == 0 ? MovementType.EN_PASSANT : MovementType.INVALID;
+		if(move.dest().y() == src.y() && move.dest().x() == dest.x()) {
+			return MovementType.EN_PASSANT;
+		}
+
+		return MovementType.INVALID;
 	}
 
 }

@@ -1,9 +1,10 @@
 package pieces.movements;
 
 import game.BoardView;
+import game.Position;
 
 public interface Movement {
 		
-	public abstract MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board);
+	public abstract MovementType isValidMove(Position src, Position dest, BoardView board);
 	
 }

@@ -1,6 +1,7 @@
 package pieces.movements;
 
 import game.BoardView;
+import game.Position;
 
 public class DiagonalMovement implements Movement {
 
@@ -9,28 +10,23 @@ public class DiagonalMovement implements Movement {
 	}
 	
 	@Override
-	public MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
+	public MovementType isValidMove(Position src, Position dest, BoardView board) {
 
-		int difX = destX - srcX;
-		int difY = destY - srcY;
+		Position dif = dest.minus(src);
 
-		if(difX != difY && difX * -1 != difY) {
+		if(dif.x() != dif.y() && dif.x() * -1 != dif.y()) {
 			return MovementType.INVALID;
 		}
 		
-		int stepX = Integer.signum(difX);
-		int stepY = Integer.signum(difY);
+		Position step = dif.step();
+		Position pos = src.plus(step);
 
-		int x = srcX + stepX;
-		int y = srcY + stepY;
-
-		while(x != destX) {
-			if(!board.isEmpty(x, y)) {
+		while(pos.x() != dest.x()) {
+			if(!board.isEmpty(pos)) {
 				return MovementType.INVALID;
 			}
 	
-			x += stepX;
-			y += stepY;
+			pos = pos.plus(step);
 		}
 
 		return MovementType.NORMAL;

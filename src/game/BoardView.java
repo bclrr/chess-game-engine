@@ -4,7 +4,7 @@ import pieces.Piece;
 
 public interface BoardView {
 
-	public abstract Piece get(int x, int y);
-	public abstract boolean isEmpty(int x, int y);
+	public abstract Piece get(Position pos);
+	public abstract boolean isEmpty(Position pos);
 	public abstract Move getLastMovement();
 }

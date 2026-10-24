@@ -20,18 +20,22 @@ public class Board implements BoardView {
 		this.pieces = pieces;
 	}
 
-	public void changePiece(int x, int y, Piece newPiece) {
-		this.pieces[y][x] = newPiece;
+	public void changePiece(Position pos, Piece newPiece) {
+		this.pieces[pos.y()][pos.x()] = newPiece;
+	}
+	
+	public void changePiece(int x, int y, PieceType type, PieceColor color) {
+		changePiece(new Position(x, y), PieceFactory.create(type, color));
 	}
 	
 	@Override
-	public Piece get(int x, int y) {
-		return this.pieces[y][x];
+	public Piece get(Position pos) {
+		return this.pieces[pos.y()][pos.x()];
 	}
 
 	@Override
-	public boolean isEmpty(int x, int y) {
-		return get(x, y).getType() == PieceType.NONE;
+	public boolean isEmpty(Position pos) {
+		return get(pos).type() == PieceType.NONE;
 	}
 
 	@Override
@@ -43,44 +47,48 @@ public class Board implements BoardView {
 		}
 	}
 
-	public boolean[][] getMoves(int x, int y) {
+	public boolean[][] getMoves(Position pos) {
 		boolean[][] movements =  new boolean[8][8];
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
-				movements[i][j] = isValidMove(x, y, j, i) != MovementType.INVALID;
+				movements[i][j] = isValidMove(pos, new Position(j, i)) != MovementType.INVALID;
 			}
 		}
 		return movements;
 	}
+	
+	public boolean[][] getMoves(int x, int y) {
+		return getMoves(new Position(x, y));
+	}
 
-	private MovementType isValidMove(int srcX, int srcY, int destX, int destY) {
-		if(get(srcX, srcY).getColor() == get(destX, destY).getColor()) {
+	private MovementType isValidMove(Position src, Position dest) {
+		if(get(src).color() == get(dest).color()) {
 			return MovementType.INVALID;
 		}
-		return get(srcX, srcY).isValidMove(srcX, srcY, destX, destY, this);
+		return get(src).isValidMove(src, dest, this);
 	}
 	
-	private boolean isLegalMove(int srcX, int srcY, int destX, int destY) {
+	private boolean isLegalMove(Position src, Position dest) {
 		//TODO
 		return false;
 	}
 	
-	public boolean move(int srcX, int srcY, int destX, int destY) {
-		MovementType moveType = isValidMove(srcX, srcY, destX, destY);
+	public boolean move(Position src, Position dest) {
+		MovementType moveType = isValidMove(src, dest);
 		if(moveType == MovementType.INVALID) {
 			return false;
 		}
 		
-		if(!isLegalMove(srcX, srcY, destX, destY)) {
+		if(!isLegalMove(src, dest)) {
 			return false;
 		}
 		
-		return apply(new Move(srcX, srcY, destX, destY, moveType));
+		return apply(new Move(src, dest, moveType));
 	}
 	
 	private boolean apply(Move move) {
-		changePiece(move.getDestX(), move.getDestY(), get(move.getSrcX(), move.getSrcY()));
-		changePiece(move.getSrcX(), move.getSrcY(), PieceFactory.empty());
+		changePiece(move.dest(), this.get(move.src()));
+		changePiece(move.src(), PieceFactory.empty());
 		return moves.add(move);
 	}
 	

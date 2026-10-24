@@ -2,8 +2,8 @@ package game;
 
 public class BoardPrinter {
 
-	public static void printMoves(Board board, int srcX, int srcY) {
-		boolean[][] movements = board.getMoves(srcX, srcY);
+	public static void printMoves(Board board, Position src) {
+		boolean[][] movements = board.getMoves(src);
 		String betweenLine = "#";
 		for(int i = 0; i < 8; i++) {
 			betweenLine += "---#";
@@ -11,7 +11,7 @@ public class BoardPrinter {
 		for(int i = 0; i < 8; i++) {
 			String line = "|";
 			for(int j = 0; j < 8; j++) {
-				if(j == srcX && i == srcY)
+				if(j == src.x() && i == src.y())
 					line += " X |";
 				else
 					line += movements[i][j] ? " o |" : "   |";
@@ -27,7 +27,7 @@ public class BoardPrinter {
 		for(int i = 0; i < 8; i++) {
 			String line = "|";
 			for(int j = 0; j < 8; j++) {
-				line += " " + board.get(j, i).toString() + " |";
+				line += " " + board.get(new Position(j, i)).toString() + " |";
 			}
 			System.out.println(betweenLine);
 			System.out.println(line);

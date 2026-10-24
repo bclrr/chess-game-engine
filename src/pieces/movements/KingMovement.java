@@ -1,6 +1,7 @@
 package pieces.movements;
 
 import game.BoardView;
+import game.Position;
 
 public class KingMovement implements Movement {
 
@@ -9,13 +10,12 @@ public class KingMovement implements Movement {
 	}
 	
 	@Override
-	public MovementType isValidMove(int srcX, int srcY, int destX, int destY, BoardView board) {
-		int difX = Math.abs(srcX - destX);
-		int difY = Math.abs(srcY - destY);
-		if(difX == 1 || difY == 1) {
+	public MovementType isValidMove(Position src, Position dest, BoardView board) {
+		Position dif = dest.minus(src).abs();
+		if(dif.x() == 1 || dif.y() == 1) {
 			return MovementType.NORMAL;
 		}
-		if(difY != 0) {
+		if(dif.y() != 0) {
 			return MovementType.INVALID;
 		}
 		
