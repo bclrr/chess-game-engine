@@ -1,30 +1,8 @@
 package game;
 
+import pieces.Piece;
 import pieces.movements.MovementType;
 
-public class Move {
+public record Move(Position src, Position dest, MovementType type, Position capturedAt, Piece captured) {
 
-	private Position src;
-	private Position dest;
-	private MovementType type;
-	
-	public Move(Position src, Position dest, MovementType type) {
-		this.src = src;
-		this.dest = dest;
-		this.type = type;
-	}
-
-
-	public Position src() {
-		return src;
-	}
-
-	public Position dest() {
-		return dest;
-	}
-
-	public MovementType getType() {
-		return type;
-	}
-	
 }

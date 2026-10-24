@@ -83,22 +83,45 @@ public class Board implements BoardView {
 			return false;
 		}
 		
-		return apply(new Move(src, dest, moveType));
+		Position capturedAt = moveType == MovementType.EN_PASSANT
+				? new Position(dest.x(), src.y())
+				: dest;
+
+		apply(new Move(src, dest, moveType, capturedAt, get(capturedAt)));
+		return true;
 	}
 	
-	private boolean apply(Move move) {
-		changePiece(move.dest(), this.get(move.src()));
-		changePiece(move.src(), PieceFactory.empty());
-		return moves.add(move);
-	}
-	
-	private boolean rollBack() {
-		Move lastMove = this.getLastMovement();
-		if(lastMove == null) {
-			return true;
+	private void apply(Move move) {
+		if(move.type() == MovementType.INVALID) {
+			return;
 		}
 
-		return false;
+		if(move.type() == MovementType.CASTLING) {
+			//TODO
+			return;
+		}
+
+		if(move.type() == MovementType.PROMOTION) {
+			//TODO
+			return;
+		}
+
+		Piece piece = get(move.src());
+		changePiece(move.src(), PieceFactory.empty());
+		changePiece(move.capturedAt(), PieceFactory.empty());
+		changePiece(move.dest(), piece);
+		moves.add(move);
+	}
+	
+	private void rollBack() {
+		Move move = this.getLastMovement();
+		if(move == null) {
+			return ;
+		}
+		
+		changePiece(move.src(), get(move.dest()));
+		changePiece(move.dest(), PieceFactory.empty());
+		changePiece(move.capturedAt(), move.captured());
 	}
 	
 	

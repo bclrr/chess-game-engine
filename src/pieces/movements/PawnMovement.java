@@ -65,7 +65,7 @@ public class PawnMovement implements Movement {
 			return MovementType.INVALID;
 		}
 		
-		if(move.getType() != MovementType.DOUBLE_PUSH) {
+		if(move.type() != MovementType.DOUBLE_PUSH) {
 			return MovementType.INVALID;
 		}
 		
