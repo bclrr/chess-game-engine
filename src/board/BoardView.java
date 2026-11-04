@@ -1,5 +1,6 @@
-package game;
+package board;
 
+import game.Move;
 import pieces.Piece;
 
 public interface BoardView {

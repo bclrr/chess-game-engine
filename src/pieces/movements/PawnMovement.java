@@ -1,8 +1,8 @@
 package pieces.movements;
 
-import game.BoardView;
+import board.BoardView;
+import board.Position;
 import game.Move;
-import game.Position;
 import pieces.Piece;
 import pieces.PieceColor;
 import pieces.PieceType;

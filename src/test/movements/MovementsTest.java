@@ -3,8 +3,8 @@ package test.movements;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import game.Board;
-import game.BoardFactory;
+import board.Board;
+import board.BoardFactory;
 import pieces.PieceColor;
 import pieces.PieceFactory;
 import pieces.PieceType;

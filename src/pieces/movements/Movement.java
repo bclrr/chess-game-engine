@@ -1,7 +1,7 @@
 package pieces.movements;
 
-import game.BoardView;
-import game.Position;
+import board.BoardView;
+import board.Position;
 
 public interface Movement {
 		

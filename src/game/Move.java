@@ -1,5 +1,6 @@
 package game;
 
+import board.Position;
 import pieces.Piece;
 import pieces.movements.MovementType;
 
