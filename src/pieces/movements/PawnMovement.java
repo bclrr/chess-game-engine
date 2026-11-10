@@ -60,16 +60,18 @@ public class PawnMovement implements Movement {
 		}
 
 		//En passant
-		Move move = board.getLastMovement();
-		if(move == null) {
+		Position enPassant = board.getEnPassant();
+		if(enPassant == null) {
 			return MovementType.INVALID;
 		}
 		
-		if(move.type() != MovementType.DOUBLE_PUSH) {
+		/**
+		if(enPassant.type() != MovementType.DOUBLE_PUSH) {
 			return MovementType.INVALID;
 		}
+		**/
 		
-		if(move.dest().y() == src.y() && move.dest().x() == dest.x()) {
+		if(enPassant.y() == dest.y() && enPassant.x() == dest.x()) {
 			return MovementType.EN_PASSANT;
 		}
 

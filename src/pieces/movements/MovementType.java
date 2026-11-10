@@ -3,7 +3,8 @@ package pieces.movements;
 public enum MovementType {
 	INVALID,
 	NORMAL,
-	CASTLING,
+	SHORT_CASTLING,
+	LONG_CASTLING,
 	EN_PASSANT,
 	DOUBLE_PUSH,
 	PROMOTION
