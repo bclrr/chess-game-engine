@@ -63,6 +63,18 @@ public class Board implements BoardView {
 		}
 		return get(src).isValidMove(src, dest, this);
 	}
+
+	@Override
+	public boolean canShortCastle(PieceColor color) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canLongCastle(PieceColor color) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	
 }

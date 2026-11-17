@@ -7,5 +7,9 @@ public enum MovementType {
 	LONG_CASTLING,
 	EN_PASSANT,
 	DOUBLE_PUSH,
-	PROMOTION
+	PROMOTION;
+	
+	public static boolean isValide(MovementType type) {
+		return type != null && type != INVALID;
+	}
 }

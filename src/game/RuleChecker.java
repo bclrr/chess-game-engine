@@ -7,11 +7,11 @@ import pieces.movements.MovementType;
 
 public class RuleChecker {
 	
-	public boolean isSquareAttack(PieceColor colorSquare, Position square, BoardView board) {
+	public boolean isSquareAttack(Position square, PieceColor colorSquare, BoardView board) {
 		for(int x = 0; x < 8; x++) {
 			for(int y = 0; y < 8; y++) {
 				Position src = new Position(x, y);
-				if(isPieceAttackingSquare(src, colorSquare, square, board)) {
+				if(isPieceAttackingSquare(src, square, colorSquare, board)) {
 					return true;
 				}
 			}
@@ -19,7 +19,7 @@ public class RuleChecker {
 		return false;
 	}
 	
-	private boolean isPieceAttackingSquare(Position src, PieceColor colorSquare, Position square, BoardView board) {
+	private boolean isPieceAttackingSquare(Position src, Position square, PieceColor colorSquare, BoardView board) {
 		if(board.isEmpty(src)) {
 			return false;
 		}
@@ -30,7 +30,7 @@ public class RuleChecker {
 	}
 	
 	public boolean isLegalMove(Position src, Position dest, MovementType type, BoardView board) {
-		if(type == MovementType.INVALID) {
+		if(type == MovementType.INVALID || board.isEmpty(src)) {
 			return false;
 		}
 		if(type == MovementType.SHORT_CASTLING || type == MovementType.LONG_CASTLING) {
@@ -39,7 +39,7 @@ public class RuleChecker {
 			Position pos = src;
 			
 			while(pos.x() != dest.plus(step).x()) {
-				if(isSquareAttack(color, pos, board)) {
+				if(isSquareAttack(pos, color, board)) {
 					return false;
 				}
 				pos = pos.plus(step);
