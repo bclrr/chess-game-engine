@@ -10,7 +10,9 @@ import board.Board;
 import board.BoardView;
 import board.Position;
 import pieces.Piece;
+import pieces.PieceColor;
 import pieces.PieceFactory;
+import pieces.PieceType;
 import pieces.movements.MovementType;
 
 public class Game {
@@ -19,10 +21,18 @@ public class Game {
 	private final RuleChecker rule;
 	private final Deque<Move> moves;
 	
+	private PieceType promotionWhite;
+	private PieceType promotionBlack;
+	
+	private PieceColor turn;
+	
 	public Game(Board board, RuleChecker rule) {
 		this.board = board;
 		this.rule = rule;
 		this.moves = new LinkedList<Move>();
+		setPromotion(PieceType.QUEEN, PieceColor.WHITE);
+		setPromotion(PieceType.QUEEN, PieceColor.BLACK);
+		updateTurn();
 	}
 	
 	public List<Move> legalMoves(Position src) {
@@ -70,25 +80,45 @@ public class Game {
 		}
 
 		if(move.type() == MovementType.SHORT_CASTLING) {
-			//TODO
-			return false;
+
+			Position posRookSrc = Position.of(move.src().x(), 0);
+			Piece rook = board.get(posRookSrc);
+			
+			board.set(Position.of(move.src().x(), move.dest().y() + 1), rook);
+			board.set(posRookSrc, PieceFactory.empty());
+			
+			board.setShortCastle(board.get(move.src()).color());
 		}
 		
 		if(move.type() == MovementType.LONG_CASTLING) {
-			//TODO
-			return false;
+			
+			Position posRookSrc = Position.of(move.src().x(), 7);
+			Piece rook = board.get(posRookSrc);
+			
+			board.set(Position.of(move.src().x(), move.dest().y() - 1), rook);
+			board.set(posRookSrc, PieceFactory.empty());
+			
+			board.setLongCastle(board.get(move.src()).color());
 		}
-
-		if(move.type() == MovementType.PROMOTION) {
-			//TODO
-			return false;
+		
+		if(move.type() == MovementType.DOUBLE_PUSH) {
+			board.setEnPassant(Position.avg(move.src(), move.dest()));
+		} else {
+			board.setEnPassant(null);
 		}
 
 		Piece piece = board.get(move.src());
 		board.set(move.src(), PieceFactory.empty());
 		board.set(move.capturedAt(), PieceFactory.empty());
 		board.set(move.dest(), piece);
-		return moves.add(move);
+		
+		if(move.type() == MovementType.PROMOTION) {
+			board.set(move.dest(), PieceFactory.create(getPromotion(turn), turn));
+		}
+
+		updateTurn();
+		moves.add(move);
+		return true;
 	}
 	
 	public void rollBack() {
@@ -96,10 +126,53 @@ public class Game {
 		if(move == null) {
 			return;
 		}
+
+		updateTurn();
 		
 		board.set(move.src(), board.get(move.dest()));
 		board.set(move.dest(), PieceFactory.empty());
 		board.set(move.capturedAt(), move.captured());
+		
+		if(move.type() == MovementType.PROMOTION) {
+			board.set(move.src(), PieceFactory.create(PieceType.PAWN, turn));
+		}
+	}
+
+	public PieceType getPromotion(PieceColor color) {
+		if(color == PieceColor.WHITE) {
+			return promotionWhite;
+		}
+		if(color == PieceColor.BLACK) {
+			return promotionBlack;
+		}
+		return null;
+	}
+
+	public void setPromotion(PieceType type, PieceColor color) {
+		if(type == PieceType.KING || type == PieceType.PAWN || type == PieceType.NONE || type == null) {
+			return;
+		}
+		if(color == PieceColor.WHITE) {
+			promotionWhite = type;
+		}
+		if(color == PieceColor.BLACK) {
+			promotionBlack = type;
+		}
+	}
+	
+	private void updateTurn() {
+		
+		if(turn == null) {
+			turn = PieceColor.WHITE;
+		}
+		
+		if(turn == PieceColor.BLACK) {
+			turn = PieceColor.WHITE;
+		}
+		
+		if(turn == PieceColor.WHITE) {
+			turn = PieceColor.BLACK;
+		}
 	}
 	
 }

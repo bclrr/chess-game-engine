@@ -11,9 +11,19 @@ public class Board implements BoardView {
 	private final Piece[][] pieces;
 	private Position enPassant;
 	
+	private boolean canShortCastleWhite;
+	private boolean canShortCastleBlack;
+
+	private boolean canLongCastleWhite;
+	private boolean canLongCastleBlack;
+	
 	public Board(Piece[][] pieces) {
 		this.pieces = pieces;
 		this.enPassant = null;
+		this.canShortCastleWhite = true;
+		this.canShortCastleBlack = true;
+		this.canLongCastleWhite = true;
+		this.canLongCastleBlack = true;
 	}
 
 	@Override
@@ -66,14 +76,42 @@ public class Board implements BoardView {
 
 	@Override
 	public boolean canShortCastle(PieceColor color) {
-		// TODO Auto-generated method stub
+		if(color == PieceColor.BLACK) {
+			return canShortCastleBlack;
+		}
+		if(color == PieceColor.WHITE) {
+			return canShortCastleWhite;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean canLongCastle(PieceColor color) {
-		// TODO Auto-generated method stub
+		if(color == PieceColor.BLACK) {
+			return canLongCastleBlack;
+		}
+		if(color == PieceColor.WHITE) {
+			return canLongCastleWhite;
+		}
 		return false;
+	}
+	
+	public void setShortCastle(PieceColor color) {
+		if(color == PieceColor.BLACK) {
+			canShortCastleBlack = !canShortCastleBlack;
+		}
+		if(color == PieceColor.WHITE) {
+			canShortCastleWhite = !canShortCastleWhite;
+		}
+	}
+	
+	public void setLongCastle(PieceColor color) {
+		if(color == PieceColor.BLACK) {
+			canLongCastleBlack = !canLongCastleBlack;
+		}
+		if(color == PieceColor.WHITE) {
+			canLongCastleWhite = !canLongCastleWhite;
+		}
 	}
 	
 	
