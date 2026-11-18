@@ -79,32 +79,26 @@ public class Game {
 			return false;
 		}
 
+		if(board.get(move.src()).color() != turn) {
+			return false;
+		}
+		
 		if(move.type() == MovementType.SHORT_CASTLING) {
 
 			Position posRookSrc = Position.of(move.src().x(), 0);
 			Piece rook = board.get(posRookSrc);
-			
 			board.set(Position.of(move.src().x(), move.dest().y() + 1), rook);
 			board.set(posRookSrc, PieceFactory.empty());
-			
-			board.setShortCastle(board.get(move.src()).color());
+			board.setShortCastle(turn, false);
 		}
 		
 		if(move.type() == MovementType.LONG_CASTLING) {
 			
 			Position posRookSrc = Position.of(move.src().x(), 7);
 			Piece rook = board.get(posRookSrc);
-			
 			board.set(Position.of(move.src().x(), move.dest().y() - 1), rook);
 			board.set(posRookSrc, PieceFactory.empty());
-			
-			board.setLongCastle(board.get(move.src()).color());
-		}
-		
-		if(move.type() == MovementType.DOUBLE_PUSH) {
-			board.setEnPassant(Position.avg(move.src(), move.dest()));
-		} else {
-			board.setEnPassant(null);
+			board.setLongCastle(turn, false);
 		}
 
 		Piece piece = board.get(move.src());
@@ -115,8 +109,10 @@ public class Game {
 		if(move.type() == MovementType.PROMOTION) {
 			board.set(move.dest(), PieceFactory.create(getPromotion(turn), turn));
 		}
-
+		
+		updateEnPassant(move.type(), move.src(), move.dest());
 		updateTurn();
+	
 		moves.add(move);
 		return true;
 	}
@@ -126,16 +122,39 @@ public class Game {
 		if(move == null) {
 			return;
 		}
-
+		
+		if(board.get(move.dest()).color() == turn) {
+			return;
+		}
+		
 		updateTurn();
+		updateEnPassant(move.type(), move.src(), move.dest());
+		
+		if(move.type() == MovementType.PROMOTION) {
+			board.set(move.dest(), PieceFactory.create(PieceType.PAWN, turn));
+		}
+		
+		if(move.type() == MovementType.SHORT_CASTLING) {
+			
+			Position posRookSrc = Position.of(move.src().x(), move.dest().y() + 1);
+			Piece rook = board.get(posRookSrc);
+			board.set(posRookSrc, PieceFactory.empty());
+			board.set(Position.of(move.src().x(), 0), rook);
+			board.setShortCastle(turn, false);
+		}
+		
+		if(move.type() == MovementType.LONG_CASTLING) {
+			
+			Position posRookSrc = Position.of(move.src().x(), move.dest().y() - 1);
+			Piece rook = board.get(posRookSrc);
+			board.set(posRookSrc, PieceFactory.empty());
+			board.set(Position.of(move.src().x(), 7), rook);
+			board.setLongCastle(turn, false);
+		}
 		
 		board.set(move.src(), board.get(move.dest()));
 		board.set(move.dest(), PieceFactory.empty());
 		board.set(move.capturedAt(), move.captured());
-		
-		if(move.type() == MovementType.PROMOTION) {
-			board.set(move.src(), PieceFactory.create(PieceType.PAWN, turn));
-		}
 	}
 
 	public PieceType getPromotion(PieceColor color) {
@@ -162,7 +181,7 @@ public class Game {
 	
 	private void updateTurn() {
 		
-		if(turn == null) {
+		if(turn == null || turn == PieceColor.NONE) {
 			turn = PieceColor.WHITE;
 		}
 		
@@ -173,6 +192,14 @@ public class Game {
 		if(turn == PieceColor.WHITE) {
 			turn = PieceColor.BLACK;
 		}
+	}
+	
+	private void updateEnPassant(MovementType type, Position src, Position dest) {
+		if(type != MovementType.DOUBLE_PUSH) {
+			board.setEnPassant(null);
+			return;
+		}
+		board.setEnPassant(Position.avg(src, dest));
 	}
 	
 }

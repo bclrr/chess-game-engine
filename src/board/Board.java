@@ -96,21 +96,21 @@ public class Board implements BoardView {
 		return false;
 	}
 	
-	public void setShortCastle(PieceColor color) {
+	public void setShortCastle(PieceColor color, boolean allow) {
 		if(color == PieceColor.BLACK) {
-			canShortCastleBlack = !canShortCastleBlack;
+			canShortCastleBlack = allow;
 		}
 		if(color == PieceColor.WHITE) {
-			canShortCastleWhite = !canShortCastleWhite;
+			canShortCastleWhite = allow;
 		}
 	}
 	
-	public void setLongCastle(PieceColor color) {
+	public void setLongCastle(PieceColor color, boolean allow) {
 		if(color == PieceColor.BLACK) {
-			canLongCastleBlack = !canLongCastleBlack;
+			canLongCastleBlack = allow;
 		}
 		if(color == PieceColor.WHITE) {
-			canLongCastleWhite = !canLongCastleWhite;
+			canLongCastleWhite = allow;
 		}
 	}
 	
