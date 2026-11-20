@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 
 import board.Board;
 import board.BoardView;
+import board.CastlingRight;
 import board.Position;
 import pieces.Piece;
 import pieces.PieceColor;
@@ -57,18 +58,22 @@ public class Game {
 		return false;
 	}
 	
-	private Move createMove(Position src, Position dest, MovementType moveType) {
+	private Move createMove(Position src, Position dest, MovementType type) {
 		Position capturedAt = dest;
-		if(moveType == MovementType.EN_PASSANT) {
+		Position enPassant = null;
+		if(type == MovementType.EN_PASSANT) {
 			capturedAt = new Position(dest.x(), src.y());
 		}
+		if(type == MovementType.DOUBLE_PUSH) {
+			enPassant = Position.avg(src, dest);
+		}
 
-		return new Move(src, dest, moveType, capturedAt, board.get(capturedAt));
+		return new Move(src, dest, capturedAt, board.get(capturedAt), type, enPassant, board.getCastlingRights());
 	}
 	
 	private MovementType isValidMove(Position src, Position dest) {
 		MovementType moveType = board.isValidMove(src, dest);
-		if(!rule.isLegalMove(src, dest, moveType, board)) {
+		if(!rule.isLegalMove(src, dest, moveType)) {
 			return MovementType.INVALID;
 		}
 		return moveType;
@@ -89,7 +94,7 @@ public class Game {
 			Piece rook = board.get(posRookSrc);
 			board.set(Position.of(move.src().x(), move.dest().y() + 1), rook);
 			board.set(posRookSrc, PieceFactory.empty());
-			board.setShortCastle(turn, false);
+			board.removeRight(CastlingRight.shortOf(turn));
 		}
 		
 		if(move.type() == MovementType.LONG_CASTLING) {
@@ -98,7 +103,7 @@ public class Game {
 			Piece rook = board.get(posRookSrc);
 			board.set(Position.of(move.src().x(), move.dest().y() - 1), rook);
 			board.set(posRookSrc, PieceFactory.empty());
-			board.setLongCastle(turn, false);
+			board.removeRight(CastlingRight.longOf(turn));
 		}
 
 		Piece piece = board.get(move.src());
@@ -118,17 +123,20 @@ public class Game {
 	}
 	
 	public void rollBack() {
-		Move move = moves.pollLast();
-		if(move == null) {
+
+		if(moves.peekLast() == null) {
 			return;
 		}
 		
-		if(board.get(move.dest()).color() == turn) {
+		if(board.get(moves.peekLast().dest()).color() == turn) {
 			return;
 		}
+		
+		Move move = moves.pollLast();
 		
 		updateTurn();
 		updateEnPassant(move.type(), move.src(), move.dest());
+		board.setCastlingRights(move.castlingRights());
 		
 		if(move.type() == MovementType.PROMOTION) {
 			board.set(move.dest(), PieceFactory.create(PieceType.PAWN, turn));
@@ -140,7 +148,6 @@ public class Game {
 			Piece rook = board.get(posRookSrc);
 			board.set(posRookSrc, PieceFactory.empty());
 			board.set(Position.of(move.src().x(), 0), rook);
-			board.setShortCastle(turn, false);
 		}
 		
 		if(move.type() == MovementType.LONG_CASTLING) {
@@ -149,49 +156,53 @@ public class Game {
 			Piece rook = board.get(posRookSrc);
 			board.set(posRookSrc, PieceFactory.empty());
 			board.set(Position.of(move.src().x(), 7), rook);
-			board.setLongCastle(turn, false);
 		}
-		
+
 		board.set(move.src(), board.get(move.dest()));
 		board.set(move.dest(), PieceFactory.empty());
 		board.set(move.capturedAt(), move.captured());
 	}
 
 	public PieceType getPromotion(PieceColor color) {
+		
 		if(color == PieceColor.WHITE) {
 			return promotionWhite;
 		}
+		
 		if(color == PieceColor.BLACK) {
 			return promotionBlack;
 		}
-		return null;
+		
+		return PieceType.NONE;
 	}
 
 	public void setPromotion(PieceType type, PieceColor color) {
+
 		if(type == PieceType.KING || type == PieceType.PAWN || type == PieceType.NONE || type == null) {
 			return;
 		}
+		
 		if(color == PieceColor.WHITE) {
 			promotionWhite = type;
+			return;
 		}
-		if(color == PieceColor.BLACK) {
-			promotionBlack = type;
-		}
+		
+		promotionBlack = type;
 	}
 	
 	private void updateTurn() {
 		
 		if(turn == null || turn == PieceColor.NONE) {
 			turn = PieceColor.WHITE;
+			return;
 		}
 		
 		if(turn == PieceColor.BLACK) {
 			turn = PieceColor.WHITE;
+			return;
 		}
-		
-		if(turn == PieceColor.WHITE) {
-			turn = PieceColor.BLACK;
-		}
+
+		turn = PieceColor.BLACK;
 	}
 	
 	private void updateEnPassant(MovementType type, Position src, Position dest) {

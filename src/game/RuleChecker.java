@@ -7,11 +7,25 @@ import pieces.movements.MovementType;
 
 public class RuleChecker {
 	
-	public boolean isSquareAttack(Position square, PieceColor colorSquare, BoardView board) {
+	private final BoardView board;
+	
+	public RuleChecker(BoardView board) {
+		this.board = board;
+	}
+	
+	private boolean isAttacking(Position piece, Position square, PieceColor color) {
+		
+		if(board.get(piece).color() == color) {
+			return false;
+		}
+		
+		return board.get(piece).isValidMove(piece, square, board) != MovementType.INVALID;
+	}
+		
+	public boolean isAttacked(Position square, PieceColor color) {
 		for(int x = 0; x < 8; x++) {
 			for(int y = 0; y < 8; y++) {
-				Position src = new Position(x, y);
-				if(isPieceAttackingSquare(src, square, colorSquare, board)) {
+				if(isAttacking(Position.of(x, y), square, color)) {
 					return true;
 				}
 			}
@@ -19,17 +33,7 @@ public class RuleChecker {
 		return false;
 	}
 	
-	private boolean isPieceAttackingSquare(Position src, Position square, PieceColor colorSquare, BoardView board) {
-		if(board.isEmpty(src)) {
-			return false;
-		}
-		if(board.get(src).color() == colorSquare) {
-			return false;
-		}
-		return board.get(src).isValidMove(src, square, board) != MovementType.INVALID;
-	}
-	
-	public boolean isLegalMove(Position src, Position dest, MovementType type, BoardView board) {
+	public boolean isLegalMove(Position src, Position dest, MovementType type) {
 		if(type == MovementType.INVALID || board.isEmpty(src)) {
 			return false;
 		}
@@ -39,7 +43,7 @@ public class RuleChecker {
 			Position pos = src;
 			
 			while(pos.x() != dest.plus(step).x()) {
-				if(isSquareAttack(pos, color, board)) {
+				if(isAttacked(pos, color)) {
 					return false;
 				}
 				pos = pos.plus(step);
